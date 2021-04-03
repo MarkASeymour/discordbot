@@ -1,31 +1,56 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CryptoCurrency {
 
-
+    @JsonProperty
     private String id;
+    @JsonProperty
     private String status;
+    @JsonProperty
     private String price;
+    @JsonProperty
     private String price_date;
+    @JsonProperty
     private String price_timestamp;
+    @JsonProperty
     private String symbol;
+    @JsonProperty
     private String circulating_supply;
+    @JsonProperty
     private String max_supply;
+    @JsonProperty
     private String name;
+    @JsonProperty
     private String logo_url;
+    @JsonProperty
     private String market_cap;
+    @JsonProperty
     private String transparent__market_cap;
+    @JsonProperty
     private String num_exchanges;
+    @JsonProperty
     private String num_pairs;
+    @JsonProperty
     private String num_pairs_unmapped;
+    @JsonProperty
     private String first_candle;
+    @JsonProperty
     private String first_trade;
+    @JsonProperty
     private String first_order_book;
+    @JsonProperty
     private String first_priced_at;
+    @JsonProperty
     private String rank;
+    @JsonProperty
     private String rank_delta;
+    @JsonProperty
     private String high;
+    @JsonProperty
     private String high_timestamp;
+    @JsonProperty
     private Interval interval;
 
     public String getId() {
