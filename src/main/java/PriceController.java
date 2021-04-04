@@ -21,7 +21,8 @@ public class PriceController {
         Gson gson = new Gson();
         PriceController priceController = new PriceController();
         try {
-            CryptoCurrency bitCoin = objectMapper.readValue(priceController.retrieveBitcoinPrice(), CryptoCurrency.class);
+//            CryptoCurrency bitCoin = objectMapper.readValue(priceController.retrieveBitcoinPrice(), CryptoCurrency.class);
+            CryptoCurrency bitCoin = new CryptoCurrency(priceController.retrieveBitcoinPrice());
             System.out.println(bitCoin);
         } catch (Exception e) {
             System.out.println(e.getMessage());

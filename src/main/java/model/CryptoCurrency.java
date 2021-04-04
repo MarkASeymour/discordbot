@@ -53,6 +53,10 @@ public class CryptoCurrency {
     @JsonProperty
     private Interval interval;
 
+    public CryptoCurrency(String jsonString) {
+//        price = jsonString.substring();
+    }
+
     public String getId() {
         return id;
     }

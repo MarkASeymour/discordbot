@@ -1,15 +1,27 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Interval {
+    @JsonProperty
     private String price_change;
+    @JsonProperty
     private String price_change_pct;
+    @JsonProperty
     private String volume;
+    @JsonProperty
     private String volume_change;
+    @JsonProperty
     private String volume_change_pct;
+    @JsonProperty
     private String market_cap_change;
+    @JsonProperty
     private String market_cap_change_pct;
+    @JsonProperty
     private String transparent_market_cap_change;
+    @JsonProperty
     private String transparent_market_cap_change_pct;
+    @JsonProperty
     private VolumeTransparency[] volume_transparency;
 
     public String getPrice_change() {
