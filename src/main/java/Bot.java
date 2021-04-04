@@ -14,7 +14,7 @@ public class Bot {
         JDABuilder jdaBuilder = JDABuilder.createDefault("NzkzNTk5MDgwNjMzODYwMDk3.X-umvQ.GvUBa9YyQj8ySbe4cGNW-80m8XM")
                 .setChunkingFilter(ChunkingFilter.ALL)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
-                .enableIntents(GatewayIntent.GUILD_MEMBERS);
+                .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES);
         JDA jda;
         jdaBuilder.addEventListeners(pingPong);
         try {

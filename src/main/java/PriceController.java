@@ -13,32 +13,32 @@ import org.springframework.web.client.RestTemplate;
 
 
 public class PriceController {
-    private String apiKey = "dbd4ee131c335eb17afc99181b1a6899";
+    private final String apiKey = "dbd4ee131c335eb17afc99181b1a6899";
     private static final String BASE_API_URL = "https://api.nomics.com/v1/currencies/ticker?key=";
-    private static final String API_SUFFIX_URL = "&ids=BTC&interval=1d";
+    private String cryptoSymbol = "";
+    private String API_SUFFIX_URL = "&ids=" + cryptoSymbol + "&interval=1d";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public static void main(String[] args) {
-
-        PriceController priceController = new PriceController();
-        try {
-            JSONArray jsonArray = (JSONArray) new JSONParser().parse(priceController.retrieveBitcoinPrice());
-            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
+//    public static void main(String[] args) {
+//        PriceController priceController = new PriceController();
+//        System.out.println(priceController.retrieveBitcoinPrice("BTC"));
+//    }
 
 
-    public String retrieveBitcoinPrice() {
+    public String retrieveBitcoinPrice(String symbol) {
+        cryptoSymbol = symbol;
+        String cryptoPrice = "";
         String bitCoin = "";
         try {
             bitCoin = restTemplate.exchange(BASE_API_URL + apiKey + API_SUFFIX_URL, HttpMethod.GET, makeEntity(), String.class).getBody();
+            JSONArray jsonArray = (JSONArray) new JSONParser().parse(bitCoin);
+            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+            cryptoPrice = jsonObject.get("price").toString();
         }
-        catch(RestClientResponseException e) {
-            System.out.println(e.getRawStatusCode() + ": " + e.getResponseBodyAsString());
+        catch(Exception e) {
+            System.out.println(e.getMessage());
         }
-        return bitCoin;
+        return cryptoPrice;
     }
     public HttpEntity makeEntity() {
         HttpHeaders headers = new HttpHeaders();
