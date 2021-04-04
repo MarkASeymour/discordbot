@@ -54,7 +54,7 @@ public class CryptoCurrency {
     private Interval interval;
 
     public CryptoCurrency(String jsonString) {
-//        price = jsonString.substring();
+        this.price = jsonString.substring(181, 195);
     }
 
     public String getId() {

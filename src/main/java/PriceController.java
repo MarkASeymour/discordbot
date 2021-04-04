@@ -1,11 +1,13 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import model.CryptoCurrency;
+
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,13 +19,11 @@ public class PriceController {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public static void main(String[] args) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Gson gson = new Gson();
+
         PriceController priceController = new PriceController();
         try {
-//            CryptoCurrency bitCoin = objectMapper.readValue(priceController.retrieveBitcoinPrice(), CryptoCurrency.class);
-            CryptoCurrency bitCoin = new CryptoCurrency(priceController.retrieveBitcoinPrice());
-            System.out.println(bitCoin);
+            JSONArray jsonArray = (JSONArray) new JSONParser().parse(priceController.retrieveBitcoinPrice());
+            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
