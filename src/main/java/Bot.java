@@ -9,14 +9,14 @@ public class Bot {
 
     public static void main(String[] args){
         BasicConfigurator.configure();
-        PingPong pingPong = new PingPong();
+        ChatController chatController = new ChatController();
 
         JDABuilder jdaBuilder = JDABuilder.createDefault("NzkzNTk5MDgwNjMzODYwMDk3.X-umvQ.GvUBa9YyQj8ySbe4cGNW-80m8XM")
                 .setChunkingFilter(ChunkingFilter.ALL)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES);
         JDA jda;
-        jdaBuilder.addEventListeners(pingPong);
+        jdaBuilder.addEventListeners(chatController);
         try {
             jda = jdaBuilder.build();
         }

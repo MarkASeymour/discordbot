@@ -1,14 +1,9 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -18,11 +13,6 @@ public class PriceController {
     private String cryptoSymbol = "";
     private String API_SUFFIX_URL = "&ids=" + cryptoSymbol + "&interval=1d";
     private final RestTemplate restTemplate = new RestTemplate();
-
-//    public static void main(String[] args) {
-//        PriceController priceController = new PriceController();
-//        System.out.println(priceController.retrieveBitcoinPrice("BTC"));
-//    }
 
 
     public String retrieveBitcoinPrice(String symbol) {
