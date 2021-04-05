@@ -13,7 +13,7 @@ public class PriceController {
     private final RestTemplate restTemplate = new RestTemplate();
 
 
-    public String retrieveBitcoinPrice(String symbol) {
+    public String retrieveCryptoPrice(String symbol) {
         String cryptoPrice = "";
         String cryptoCurr = "";
         String API_SUFFIX_URL = "&ids=" + symbol + "&interval=1d";
@@ -29,6 +29,28 @@ public class PriceController {
         }
         return cryptoPrice;
     }
+
+    public String getExchangeRate(String symbol) {
+        String EXCHANGE_URL = "https://api.nomics.com/v1/exchange-rates?key=";
+        try {
+            String exchangeCurrencies = restTemplate.exchange(EXCHANGE_URL + apiKey, HttpMethod.GET, makeEntity(), String.class).getBody();
+            JSONArray jsonArray = (JSONArray) new JSONParser().parse(exchangeCurrencies);
+
+            for(int i = 0; i < jsonArray.size(); i++) {
+                JSONObject tempJSONObject = (JSONObject) jsonArray.get(i);
+                if(tempJSONObject.get("currency").equals(symbol)) {
+                    return tempJSONObject.get("rate").toString();
+                }
+            }
+            return "enter a valid currency symbol";
+
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "something went wrong retrieving currencies!";
+        }
+    }
+
     public HttpEntity makeEntity() {
         HttpHeaders headers = new HttpHeaders();
         return new HttpEntity<>(headers);

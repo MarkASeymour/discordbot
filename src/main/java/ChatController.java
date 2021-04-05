@@ -11,7 +11,7 @@ public class ChatController extends ListenerAdapter {
 
         if(e.getMessage().getContentRaw().contains(":c")) {
             String desiredCryptoSymbol = e.getMessage().getContentRaw().substring(2).trim().toUpperCase();
-            String cryptoPrice = priceController.retrieveBitcoinPrice(desiredCryptoSymbol);
+            String cryptoPrice = priceController.retrieveCryptoPrice(desiredCryptoSymbol);
             if(cryptoPrice.equals("enter a valid cryptocurrency symbol")) {
                 e.getChannel().sendMessage(cryptoPrice).queue();
             } else {
@@ -20,6 +20,17 @@ public class ChatController extends ListenerAdapter {
             }
 
 
+        }
+        if(e.getMessage().getContentRaw().contains(":e")) {
+            String desiredCurrencySymbol = e.getMessage().getContentRaw().substring(2).trim().toUpperCase();
+            String exchangeRate = priceController.getExchangeRate(desiredCurrencySymbol);
+            if(exchangeRate.equals("enter a valid currency symbol") || exchangeRate.equals("something went wrong retrieving currencies!")) {
+                e.getChannel().sendMessage(exchangeRate).queue();
+            }
+            else {
+                e.getChannel().sendMessage(desiredCurrencySymbol + " to USD is currently: $" + exchangeRate).queue();
+
+            }
         }
 
 
