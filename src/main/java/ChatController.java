@@ -10,10 +10,15 @@ public class ChatController extends ListenerAdapter {
         PriceController priceController = new PriceController();
 
         if(e.getMessage().getContentRaw().contains(":c")) {
-            String desiredCryptoSymbol = e.getMessage().getContentRaw().substring(3, 6).toUpperCase();
+            String desiredCryptoSymbol = e.getMessage().getContentRaw().substring(2).trim().toUpperCase();
             String cryptoPrice = priceController.retrieveBitcoinPrice(desiredCryptoSymbol);
+            if(cryptoPrice.equals("enter a valid cryptocurrency symbol")) {
+                e.getChannel().sendMessage(cryptoPrice).queue();
+            } else {
+                e.getChannel().sendMessage(desiredCryptoSymbol + " to USD is currently: $" + cryptoPrice).queue();
 
-            e.getChannel().sendMessage(desiredCryptoSymbol + " to USD is currently: $" + cryptoPrice).queue();
+            }
+
 
         }
 
