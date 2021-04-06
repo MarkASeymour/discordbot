@@ -1,3 +1,5 @@
+import model.Currency;
+import model.Interval;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,21 +15,37 @@ public class PriceController {
     private final RestTemplate restTemplate = new RestTemplate();
 
 
-    public String retrieveCryptoPrice(String symbol) {
+    public Currency retrieveCryptoPrice(String symbol) {
         String cryptoPrice = "";
         String cryptoCurr = "";
         String API_SUFFIX_URL = "&ids=" + symbol + "&interval=1d";
+        Currency currency = new Currency();
+        Interval intervalOneDay = new Interval();
+        Interval intervalThirtyDay = new Interval();
         try {
             cryptoCurr = restTemplate.exchange(BASE_API_URL + apiKey + API_SUFFIX_URL, HttpMethod.GET, makeEntity(), String.class).getBody();
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(cryptoCurr);
             JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            cryptoPrice = jsonObject.get("price").toString();
+            JSONObject jsonObjectInterval1d = (JSONObject) jsonObject.get("1d");
+            currency.setPrice(jsonObject.get("price").toString());
+            currency.setHigh(jsonObject.get("high").toString());
+            currency.setHighTimestamp(jsonObject.get("high_timestamp").toString());
+            currency.setName(jsonObject.get("name").toString());
+            currency.setRank(jsonObject.get("rank").toString());
+            currency.setStatus(jsonObject.get("status").toString());
+            currency.setSymbol(jsonObject.get("symbol").toString());
+
+            intervalOneDay.setIntervalLength("1d");
+            intervalOneDay.setPriceChange(jsonObjectInterval1d.get("price_change").toString());
+            intervalOneDay.setPriceChangePct(jsonObjectInterval1d.get("price_change_pct").toString());
+
+            currency.setOneDayInterval(intervalOneDay);
         }
         catch(Exception e) {
-            cryptoPrice = "enter a valid cryptocurrency symbol";
+            currency.setName("Invalid crypto symbol. Enter a valid symbol!");
             System.out.println(e.getMessage());
         }
-        return cryptoPrice;
+        return currency;
     }
 
     public String getExchangeRate(String symbol) {
