@@ -18,15 +18,18 @@ public class PriceController {
     public Currency retrieveCryptoPrice(String symbol) {
         String cryptoPrice = "";
         String cryptoCurr = "";
-        String API_SUFFIX_URL = "&ids=" + symbol + "&interval=1d";
+        String API_SUFFIX_URL = "&ids=" + symbol + "&interval=1d,30d";
         Currency currency = new Currency();
         Interval intervalOneDay = new Interval();
         Interval intervalThirtyDay = new Interval();
         try {
+            // get json object from nomics, store temporarily as local json
             cryptoCurr = restTemplate.exchange(BASE_API_URL + apiKey + API_SUFFIX_URL, HttpMethod.GET, makeEntity(), String.class).getBody();
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(cryptoCurr);
             JSONObject jsonObject = (JSONObject) jsonArray.get(0);
             JSONObject jsonObjectInterval1d = (JSONObject) jsonObject.get("1d");
+            JSONObject jsonObjectInterval30d = (JSONObject) jsonObject.get("30d");
+            //set up java currency object from local json
             currency.setPrice(jsonObject.get("price").toString());
             currency.setHigh(jsonObject.get("high").toString());
             currency.setHighTimestamp(jsonObject.get("high_timestamp").toString());
@@ -34,12 +37,17 @@ public class PriceController {
             currency.setRank(jsonObject.get("rank").toString());
             currency.setStatus(jsonObject.get("status").toString());
             currency.setSymbol(jsonObject.get("symbol").toString());
-
+            //set up 1d interval object
             intervalOneDay.setIntervalLength("1d");
             intervalOneDay.setPriceChange(jsonObjectInterval1d.get("price_change").toString());
             intervalOneDay.setPriceChangePct(jsonObjectInterval1d.get("price_change_pct").toString());
-
+            //set up 30d interval object
+            intervalThirtyDay.setIntervalLength("30d");
+            intervalThirtyDay.setPriceChange(jsonObjectInterval30d.get("price_change").toString());
+            intervalThirtyDay.setPriceChangePct(jsonObjectInterval30d.get("price_change_pct").toString());
+            //store in currency object
             currency.setOneDayInterval(intervalOneDay);
+            currency.setThirtyDayInterval(intervalThirtyDay);
         }
         catch(Exception e) {
             currency.setName("Invalid crypto symbol. Enter a valid symbol!");

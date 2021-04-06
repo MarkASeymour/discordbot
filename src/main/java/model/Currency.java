@@ -10,6 +10,15 @@ public class Currency {
     private String high;
     private String highTimestamp;
     private Interval oneDayInterval;
+    private Interval thirtyDayInterval;
+
+    public Interval getThirtyDayInterval() {
+        return thirtyDayInterval;
+    }
+
+    public void setThirtyDayInterval(Interval thirtyDayInterval) {
+        this.thirtyDayInterval = thirtyDayInterval;
+    }
 
     public Interval getOneDayInterval() {
         return oneDayInterval;
