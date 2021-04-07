@@ -19,12 +19,16 @@ public class ChatController extends ListenerAdapter {
             } else {
                 e.getChannel().sendMessage(
                         "Currently, " + currency.getName() + " is ranked #" + currency.getRank() + "\n"
-                                + desiredCryptoSymbol + " to USD: $" + currency.getPrice() + "\n"
-                                + "All-time high of $" + currency.getHigh() + " on " + currency.getHighTimestamp().substring(0, 10) + "\n"
+                                + "Price: $" + currency.getPrice() + "\n"
+                                + "High Price: $" + currency.getHigh() + " on " + currency.getHighTimestamp().substring(0, 10) + "\n"
                                 + "\n"
                                 + "1 DAY TREND" + "\n"
                                 + "The price of " + currency.getName() + " has " + currency.getOneDayInterval().getTrend() + " $" + currency.getOneDayInterval().getPriceChange() + "\n"
                                 + "A change of " + currency.getOneDayInterval().getPriceChangePct() + "%" + "\n"
+                                + "\n"
+                                + "7 DAY TREND" + "\n"
+                                + "The price of " + currency.getName() + " has " + currency.getSevenDayInterval().getTrend() + " $" + currency.getSevenDayInterval().getPriceChange() + "\n"
+                                + "A change of " + currency.getSevenDayInterval().getPriceChangePct() + "%" + "\n"
                                 + "\n"
                                 + "30 DAY TREND" + "\n"
                                 + "The price of " + currency.getName() + " has " + currency.getThirtyDayInterval().getTrend() + " $" + currency.getThirtyDayInterval().getPriceChange() + "\n"

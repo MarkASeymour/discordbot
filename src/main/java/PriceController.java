@@ -18,10 +18,11 @@ public class PriceController {
     public Currency retrieveCryptoPrice(String symbol) {
         String cryptoPrice = "";
         String cryptoCurr = "";
-        String API_SUFFIX_URL = "&ids=" + symbol + "&interval=1d,30d";
+        String API_SUFFIX_URL = "&ids=" + symbol + "&interval=1d,7d,30d";
         Currency currency = new Currency();
         Interval intervalOneDay = new Interval();
         Interval intervalThirtyDay = new Interval();
+        Interval intervalSevenDay = new Interval();
         try {
             // get json object from nomics, store temporarily as local json
             cryptoCurr = restTemplate.exchange(BASE_API_URL + apiKey + API_SUFFIX_URL, HttpMethod.GET, makeEntity(), String.class).getBody();
@@ -29,6 +30,7 @@ public class PriceController {
             JSONObject jsonObject = (JSONObject) jsonArray.get(0);
             JSONObject jsonObjectInterval1d = (JSONObject) jsonObject.get("1d");
             JSONObject jsonObjectInterval30d = (JSONObject) jsonObject.get("30d");
+            JSONObject jsonObjectInterval7d = (JSONObject) jsonObject.get("7d");
             //set up java currency object from local json
             currency.setPrice(jsonObject.get("price").toString());
             currency.setHigh(jsonObject.get("high").toString());
@@ -41,12 +43,17 @@ public class PriceController {
             intervalOneDay.setIntervalLength("1d");
             intervalOneDay.setPriceChange(jsonObjectInterval1d.get("price_change").toString());
             intervalOneDay.setPriceChangePct(jsonObjectInterval1d.get("price_change_pct").toString());
+            //set up 7d interval object
+            intervalSevenDay.setIntervalLength("7d");
+            intervalSevenDay.setPriceChange(jsonObjectInterval7d.get("price_change").toString());
+            intervalSevenDay.setPriceChangePct(jsonObjectInterval7d.get("price_change_pct").toString());
             //set up 30d interval object
             intervalThirtyDay.setIntervalLength("30d");
             intervalThirtyDay.setPriceChange(jsonObjectInterval30d.get("price_change").toString());
             intervalThirtyDay.setPriceChangePct(jsonObjectInterval30d.get("price_change_pct").toString());
             //store in currency object
             currency.setOneDayInterval(intervalOneDay);
+            currency.setSevenDayInterval(intervalSevenDay);
             currency.setThirtyDayInterval(intervalThirtyDay);
         }
         catch(Exception e) {

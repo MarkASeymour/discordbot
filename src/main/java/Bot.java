@@ -11,7 +11,7 @@ public class Bot {
         BasicConfigurator.configure();
         ChatController chatController = new ChatController();
 
-        JDABuilder jdaBuilder = JDABuilder.createDefault("NzkzNTk5MDgwNjMzODYwMDk3.X-umvQ.GvUBa9YyQj8ySbe4cGNW-80m8XM")
+        JDABuilder jdaBuilder = JDABuilder.createDefault("ODI5MzM3NzE0MjU2MTE3ODAx.YG2q7w.N9e0Vxo1Xvm-pzdhhDL_dBI-2o4")
                 .setChunkingFilter(ChunkingFilter.ALL)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES);
