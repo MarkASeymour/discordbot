@@ -16,7 +16,9 @@ public class ChatController extends ListenerAdapter {
             currency = priceController.retrieveCryptoPrice(desiredCryptoSymbol);
             if(currency.getName().equals("Invalid crypto symbol. Enter a valid symbol!")) {
                 e.getChannel().sendMessage(currency.getName()).queue();
+                System.out.println("received invalid crypto symbol");
             } else {
+                System.out.println("received valid symbol");
                 e.getChannel().sendMessage(
                         "Currently, " + currency.getName() + " is ranked #" + currency.getRank() + "\n"
                                 + "Price: $" + currency.getPrice() + "\n"
