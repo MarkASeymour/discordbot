@@ -9,7 +9,16 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 
+
 public class PriceController {
+
+    private JSONObject jsonObject;
+    JSONObject jsonObjectInterval1d;
+    JSONObject jsonObjectInterval30d;
+    JSONObject jsonObjectInterval7d;
+    JSONObject jsonObjectInterval1h;
+    JSONObject jsonObjectInterval365d;
+    JSONObject jsonObjectIntervalYTD;
     private final String apiKey = "dbd4ee131c335eb17afc99181b1a6899";
     private static final String BASE_API_URL = "https://api.nomics.com/v1/currencies/ticker?key=";
     private final RestTemplate restTemplate = new RestTemplate();
@@ -23,14 +32,20 @@ public class PriceController {
         Interval intervalOneDay = new Interval();
         Interval intervalThirtyDay = new Interval();
         Interval intervalSevenDay = new Interval();
+        Interval intervalOneHour = new Interval();
+        Interval interval365Day = new Interval();
+        Interval intervalYearToDate = new Interval();
         try {
             // get json object from nomics, store temporarily as local json
             cryptoCurr = restTemplate.exchange(BASE_API_URL + apiKey + API_SUFFIX_URL, HttpMethod.GET, makeEntity(), String.class).getBody();
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(cryptoCurr);
-            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            JSONObject jsonObjectInterval1d = (JSONObject) jsonObject.get("1d");
-            JSONObject jsonObjectInterval30d = (JSONObject) jsonObject.get("30d");
-            JSONObject jsonObjectInterval7d = (JSONObject) jsonObject.get("7d");
+            jsonObject = (JSONObject) jsonArray.get(0);
+            jsonObjectInterval1d = (JSONObject) jsonObject.get("1d");
+            jsonObjectInterval30d = (JSONObject) jsonObject.get("30d");
+            jsonObjectInterval7d = (JSONObject) jsonObject.get("7d");
+            jsonObjectInterval1h = (JSONObject) jsonObject.get("1h");
+            jsonObjectInterval365d = (JSONObject) jsonObject.get("365d");
+            jsonObjectIntervalYTD = (JSONObject) jsonObject.get("ytd");
             //set up java currency object from local json
             currency.setPrice(jsonObject.get("price").toString());
             currency.setHigh(jsonObject.get("high").toString());
@@ -39,22 +54,19 @@ public class PriceController {
             currency.setRank(jsonObject.get("rank").toString());
             currency.setStatus(jsonObject.get("status").toString());
             currency.setSymbol(jsonObject.get("symbol").toString());
-            //set up 1d interval object
-            intervalOneDay.setIntervalLength("1d");
-            intervalOneDay.setPriceChange(jsonObjectInterval1d.get("price_change").toString());
-            intervalOneDay.setPriceChangePct(jsonObjectInterval1d.get("price_change_pct").toString());
-            //set up 7d interval object
-            intervalSevenDay.setIntervalLength("7d");
-            intervalSevenDay.setPriceChange(jsonObjectInterval7d.get("price_change").toString());
-            intervalSevenDay.setPriceChangePct(jsonObjectInterval7d.get("price_change_pct").toString());
-            //set up 30d interval object
-            intervalThirtyDay.setIntervalLength("30d");
-            intervalThirtyDay.setPriceChange(jsonObjectInterval30d.get("price_change").toString());
-            intervalThirtyDay.setPriceChangePct(jsonObjectInterval30d.get("price_change_pct").toString());
+            //set up interval objects
+            setIntervalDetails("1d", intervalOneDay);
+            setIntervalDetails("7d", intervalSevenDay);
+            setIntervalDetails("30d", intervalThirtyDay);
+            setIntervalDetails("1h", intervalOneHour);
+            setIntervalDetails("365d", interval365Day);
+            setIntervalDetails("ytd", intervalYearToDate);
+
             //store in currency object
             currency.setOneDayInterval(intervalOneDay);
             currency.setSevenDayInterval(intervalSevenDay);
             currency.setThirtyDayInterval(intervalThirtyDay);
+
         }
         catch(Exception e) {
             currency.setName("Invalid crypto symbol. Enter a valid symbol!");
@@ -88,6 +100,12 @@ public class PriceController {
         HttpHeaders headers = new HttpHeaders();
         return new HttpEntity<>(headers);
 
+    }
+
+    public void setIntervalDetails(String intervalString, Interval intervalObject) {
+        intervalObject.setIntervalLength(intervalString);
+        intervalObject.setPriceChange(jsonObjectInterval1d.get("price_change").toString());
+        intervalObject.setPriceChangePct(jsonObjectInterval1d.get("price_change_pct").toString());
     }
 
     

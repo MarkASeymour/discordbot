@@ -1,4 +1,5 @@
 
+import model.Interval;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,5 +24,11 @@ public class PriceControllerTest {
         }
         Assert.assertEquals("Invalid crypto symbol. Enter a valid symbol!", priceController.retrieveCryptoPrice("skjhdf").getName());
     }
+
+//    @Test
+//    public void setIntervalDetailsTest() {
+//        Interval testInterval = new Interval();
+//        priceController.setIntervalDetails("test1", );
+//    }
 
 }
