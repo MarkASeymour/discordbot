@@ -1,5 +1,4 @@
 import model.Currency;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -15,13 +14,9 @@ public class ChatController extends ListenerAdapter {
             String desiredCryptoSymbol = e.getMessage().getContentRaw().substring(2).trim().toUpperCase();
             currency = priceController.retrieveCryptoPrice(desiredCryptoSymbol);
             if(currency.getName().equals("Invalid crypto symbol. Enter a valid symbol!")) {
-                if(e.getAuthor().toString().contains("GunSlingRick")) {
-                    e.getChannel().sendMessage("Karim, remember to use actual crypto ticker abbreviations. If you are knowingly putting in non-crypto stuff in an attempt to be funny, stop being a faggot.").queue();
-                }
-                else {
-                    e.getChannel().sendMessage(currency.getName()).queue();
-                    System.out.println("received invalid crypto symbol");
-                }
+                e.getChannel().sendMessage(currency.getName()).queue();
+                System.out.println("received invalid crypto symbol");
+
             } else {
                 System.out.println("received valid symbol");
                 e.getChannel().sendMessage(
